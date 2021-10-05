@@ -79,5 +79,7 @@ module.exports = {
     getCredentialsfToken,
     authenticate,
     authFrmTkn,
-    _toB64
+    _toB64,
+    _fromB64,
+    _validateP,
 };

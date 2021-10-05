@@ -51,5 +51,6 @@ module.exports = {
     userExists,
     passwordCheck,
     validateEmail,
-    encryptPss
+    encryptPss,
+    _vEmail
 };
