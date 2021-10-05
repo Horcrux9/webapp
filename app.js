@@ -11,19 +11,6 @@ const app = express();
  */
 
 /**
- * Test database connection
- */
-const testdB = async () => {
-    try {
-        await db.authenticate();
-        console.log("Database connected ...");
-    } catch (err) {
-        console.error(`DB connection error: ${err}`);
-    }
-}
-testdB();
-
-/**
  * Main page
  */
 require("./controller")(app);
@@ -32,6 +19,7 @@ app.listen(PORT, async () => {
     /**
      * Sync tables
      */
-    await sequelize.sync({ alter: true });
+    sequelize.authenticate();
+    console.log("Database connected!");
     console.log(`App at http://127.0.0.1:${PORT}`);
 });

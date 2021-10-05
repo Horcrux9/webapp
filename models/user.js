@@ -12,47 +12,70 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // define association here
         }
+
+        toJSON() {
+            return { ...this.get(), password: undefined, pk: undefined };
+        }
     };
     User.init({
+
+        pk: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            unique: true,
+            autoIncrement: true,
+        },
+
         id: {
-                type: DataTypes.UUID,
-                defaultValue: sequelize.UUID4,
-                primaryKey: true
+            /**
+             * https://stackoverflow.com/questions/43993725/syntax-error-at-or-near-serial-with-autoincrement-only
+             * https://www.postgresql.org/docs/9.4/uuid-ossp.html
+             * autoIncrement: true, TODO
+             * primaryKey: true,  https://stackoverflow.com/questions/52414414/best-practices-on-primary-key-auto-increment-and-uuid-in-rdbms-and-sql-databas
+             */
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+            unique: true,
         },
 
         first_name: {
-                type: DataTypes.STRING,
-                allowNull: false
+            type: DataTypes.STRING,
+            allowNull: false
         },
 
         last_name: {
-                type: DataTypes.STRING,
-                allowNull: true
+            type: DataTypes.STRING,
+            allowNull: true
         },
 
         username: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                unique: true,
-                validate: {
-                        isEmail: true
-                }
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+            validate: {
+                    isEmail: true
+            }
+        },
+
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false,
         },
 
         account_created: {
-                type: DataTypes.DATE,
-                defaultValue: sequelize.NOW,
-                allowNull: false
+            type: DataTypes.DATE,
+            defaultValue: Date.now(),
+            allowNull: false
         },
 
         account_updated: {
-                type: DataTypes.DATE,
-                defaultValue: sequelize.NOW,
-                allowNull: false
+            type: DataTypes.DATE,
+            defaultValue: Date.now(),
+            allowNull: false
         },
     }, {
         sequelize,
-        tableName: "user",
+        tableName: "users",
         modelName: 'User',
         timestamps: false,
     });

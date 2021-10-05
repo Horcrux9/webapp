@@ -8,6 +8,6 @@ mainRouter.use('/', require("./create"));
 //     .put(require("./update"));
 
 mainRouter.get("/self", require("./view"));
-mainRouter.post("/self", require("./update"));
+mainRouter.put("/self", require("./update"));
 
 module.exports = mainRouter;

@@ -1,3 +1,4 @@
+const express = require("express");
 /**
  * Main controller
  * https://medium.com/@sesitamakloe/how-we-structure-our-express-js-routes-58933d02e491
@@ -9,6 +10,8 @@ module.exports = function(app) {
     app.get('/', (req, res) => {
         res.send("Hello world !!\n");
     });
+
+    app.use(express.json());
 
     app.use("/v1", require("./v1/controller"));
 };

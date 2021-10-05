@@ -1,28 +1,52 @@
 'use strict';
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Users', {
-      id: {
-        type: Sequelize.UUID
-      },
-      first_name: {
-        type: Sequelize.STRING,
-      },
-      last_name: {
-        type: Sequelize.STRING,
-      },
-      email: {
-        type: Sequelize.STRING,
-      },
-      account_created: {
-        type: Sequelize.DATE,
-      },
-      account_updated: {
-        type: Sequelize.DATE,
-      },
-    });
-  },
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Users');
-  }
+    up: async (queryInterface, DataTypes) => {
+        await queryInterface.createTable('users', {
+            pk: {
+                type: DataTypes.INTEGER,
+                primaryKey: true,
+                unique: true,
+                autoIncrement: true,
+            },
+            id: {
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
+                primaryKey: true,
+                unique: true,
+            },
+            first_name: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            last_name: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
+            username: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                unique: true,
+                validate: {
+                        isEmail: true
+                },
+            },
+            password: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            account_created: {
+                type: DataTypes.DATE,
+                allowNull: false,
+                defaultValue: Date.now(),
+            },
+            account_updated: {
+                type: DataTypes.DATE,
+                allowNull: false,
+                defaultValue: Date.now(),
+            },
+        });
+    },
+    down: async (queryInterface, DataTypes) => {
+        await queryInterface.dropTable('users');
+    }
 };
