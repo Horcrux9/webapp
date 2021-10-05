@@ -1,5 +1,6 @@
 const { authFrmTkn } = require(__dirname + "./../../auth/auth");
 const { User } = require(__dirname + "./../../models");
+const { encryptPss, validateEmail } = require(__dirname + "./../../utils/user_utils");
 
 const update = async (token, payload) => {
     /* console.log("HERE ", req); */
@@ -16,9 +17,30 @@ const update = async (token, payload) => {
     }
 
     const response = await authFrmTkn(token);
-
     if (response.status != 200) {
         return response;
+    }
+
+    if ("first_name" in payload && payload.first_name == '') {
+        return {
+            status: 400,
+            message: "first_name cannot be empty"
+        }
+    }
+
+    if ("password" in payload) {
+        const passCheck = passwordCheck(password);
+        if(passCheck.status != 200) {
+            return passCheck;
+        }
+        payload.password = encryptPss(payload.password);
+    }
+
+    if ("username" in payload) {
+        const unameCheck = validateEmail(payload.username);
+        if(unameCheck.status != 200) {
+            return unameCheck;
+        }
     }
 
     try {
@@ -33,9 +55,9 @@ const update = async (token, payload) => {
 module.exports = ('/', async (req, res) => {
     try {
         const response = await update(req.headers.authorization, req.body);
-        return res.status(response.status).send();
+        return res.status(response.status).json({ ...response, status: undefined });
     } catch (error) {
-        return res.status(400).send();
+        return res.status(400).json({ message: error.message });
     };
 });
 
