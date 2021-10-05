@@ -65,13 +65,13 @@ module.exports = (sequelize, DataTypes) => {
         account_created: {
             type: DataTypes.DATE,
             defaultValue: Date.now(),
-            allowNull: false
+            allowNull: false,
         },
 
         account_updated: {
             type: DataTypes.DATE,
             defaultValue: Date.now(),
-            allowNull: false
+            allowNull: false,
         },
     }, {
         sequelize,

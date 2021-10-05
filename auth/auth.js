@@ -61,24 +61,23 @@ const authenticate = async (uname, pss) => {
         message: "OK",
         user: user
     }
-}
+};
 
-const genToken = async (uname, pss) => {
-
-    const response = await authenticate(uname, pss);
-    if (response.status != 200) {
-        return response;
+const authFrmTkn = async (token) => {
+    const response = getCredentialsfToken(token);
+    if (! response.username || ! response.password) {
+        return {
+            status: 401, /* Unauthorized */
+            message: "Unauthorized"
+        }
     }
 
-    return {
-        status: 200, /* OK */
-        message: "OK",
-        token: _toB64(uname + ':' + pss)
-    };
+    return (await authenticate(response.username, response.password));
 };
 
 module.exports = {
-    genToken,
     getCredentialsfToken,
-    authenticate
+    authenticate,
+    authFrmTkn,
+    _toB64
 };

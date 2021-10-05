@@ -1,4 +1,19 @@
-const { genToken } = require(__dirname + "./../../auth/auth");
+const { _toB64, authenticate } = require(__dirname + "./../../auth/auth");
+
+
+const genToken = async (uname, pss) => {
+    const response = await authenticate(uname, pss);
+    if (response.status != 200) {
+        return response;
+    }
+
+    return {
+        status: 200, /* OK */
+        message: "OK",
+        token: _toB64(uname + ':' + pss)
+    };
+};
+
 
 module.exports = ('/', async (req, res) => {
     try {

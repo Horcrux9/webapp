@@ -1,18 +1,40 @@
 const router = require("express").Router();
 const { User } = require(__dirname + "./../../models");
-const bcrypt = require("bcrypt");
+const { userExists, passwordCheck, validateEmail, encryptPss } = require(__dirname + "./../../utils/user_utils");
 
 
 const create = async (payload) => {
     const {
-        first_name,
-        last_name,
-        username,
-        password
+        first_name, last_name, username, password
     } = payload;
 
-    const salt = await bcrypt.genSalt(10);
-    const cryptP = await bcrypt.hash(password, salt);
+    const exists = await userExists({ username });
+
+    if (first_name == '') {
+        return {
+            status: 400,
+            message: "first_name cannot be empty"
+        }
+    }
+
+    if (exists) {
+        return {
+            status: 400,
+            message: "User already exists"
+        };
+    }
+
+    const passCheck = passwordCheck(password);
+    if(passCheck.status != 200) {
+        return passCheck;
+    }
+
+    const unameCheck = validateEmail(username);
+    if(unameCheck.status != 200) {
+        return unameCheck;
+    }
+
+    const cryptP = await encryptPss(password);
 
     const user = await User.create({
         first_name: first_name,
@@ -20,16 +42,19 @@ const create = async (payload) => {
         username: username,
         password: cryptP
     });
-    return user;
+
+    return {
+        status: 201,
+        ...user.toJSON()
+    };
 }
 
 router.post('/', async (req, res, next) => {
     try {
-        const user = await create(req.body);
-        return res.status(201).json(user);
+        const response = await create(req.body);
+        return res.status(response.status).json({ ...response, status: undefined });
     } catch (error) {
-        console.error(error);
-        return res.status(400).json({error: error.message});
+        return res.status(400).json({ message: error.message });
     }
 });
 
