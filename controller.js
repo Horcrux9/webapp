@@ -7,11 +7,14 @@ const express = require("express");
  */
 module.exports = function(app) {
 
+    /* Deprecated :P
     app.get('/', (req, res) => {
         res.send("Hello world !!\n");
     });
+    */
 
     app.use(express.json());
 
     app.use("/v1", require("./v1/controller"));
+
 };

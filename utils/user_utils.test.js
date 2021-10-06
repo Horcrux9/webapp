@@ -7,4 +7,3 @@ test("Email validation", () => {
     expect(_vEmail("asdv@asd.case")).toBe(true);
     expect(_vEmail("asdv@asdcase")).toBe(false);
 });
-
