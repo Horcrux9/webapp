@@ -1,8 +1,6 @@
-const { authFrmTkn } = require(__dirname + "./../../auth/auth");
-const { User } = require(__dirname + "./../../models");
 const { encryptPss, validateEmail, passwordCheck } = require(__dirname + "./../../utils/user_utils");
 
-const update = async (token, payload) => {
+const update = async (user, payload) => {
     /* console.log("HERE ", req); */
 
     if (payload && Object.keys(payload).length == 0) {
@@ -14,11 +12,6 @@ const update = async (token, payload) => {
      */
     if ("id" in payload || "pk" in payload || "account_created" in payload || "account_updated" in payload) {
         return { status: 400, message: "ReadOnly field provided" };
-    }
-
-    const response = await authFrmTkn(token);
-    if (response.status != 200) {
-        return response;
     }
 
     if ("first_name" in payload && payload.first_name == '') {
@@ -44,7 +37,7 @@ const update = async (token, payload) => {
     }
 
     try {
-        const ans = await response.user.update({ ...payload, account_updated: Date.now() });
+        const ans = await user.update({ ...payload, account_updated: Date.now() });
         return { status: 204 };
     } catch (error) {
         return { status: 400, message: error.message };
@@ -54,7 +47,7 @@ const update = async (token, payload) => {
 
 module.exports = ('/', async (req, res) => {
     try {
-        const response = await update(req.headers.authorization, req.body);
+        const response = await update(req.user, req.body);
         return res.status(response.status).json({ ...response, status: undefined });
     } catch (error) {
         return res.status(400).json({ message: error.message });
