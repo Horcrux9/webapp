@@ -3,7 +3,7 @@ const {
 } = require(__dirname + "./../../../models");
 const {
     profilePicExists,
-    typeCheck,
+    /* typeCheck, */
     fileNameForStorage,
 } = require(__dirname + "./../../../utils/image_utils");
 const {
@@ -11,20 +11,24 @@ const {
     bucketName
 } = require(__dirname + "./../../../s3/s3");
 const uuid = require("uuid");
+const fs = require("fs");
 
 const set = async (req) => {
 
-    const response = typeCheck(req.file);
-    if (response.status != 200) {
-        return response;
+    if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+        return {
+            status: 400,
+            message: "Error: File upload only supports the following filetypes - " + allowedTypes,
+        };
     }
 
     let image = await profilePicExists(req.user.id);
 
+    const fname = fileNameForStorage();
     const params = {
         Bucket: bucketName,
-        Key: uuid.v4() + '/' + fileNameForStorage(req.file),
-        Body: req.file.buffer
+        Key: uuid.v4() + '/' + fname,
+        Body: req.body
     };
 
     const data = await S3.upload(params).promise();
@@ -32,14 +36,14 @@ const set = async (req) => {
     try {
         if (image) {
             await image.update({
-                file_name: req.file.originalname,
+                file_name: fname,
                 upload_date: Date.now(),
                 url: data.Location,
             });
         } else {
             image = await Image.create({
                 id: req.user.id,
-                file_name: req.file.originalname,
+                file_name: fname,
                 url: data.Location,
             });
         }
