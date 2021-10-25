@@ -47,9 +47,14 @@ const getFormData = multer({
     storage: _storage,
 });
 
+const getKeyfromUrl = (url) => {
+    return url.substring(url.lastIndexOf('/') + 1);
+}
+
 module.exports = {
     profilePicExists,
     typeCheck,
     fileNameForStorage,
     getFormData,
+    getKeyfromUrl,
 };

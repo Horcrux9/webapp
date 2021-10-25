@@ -1,7 +1,3 @@
-// https://stackoverflow.com/questions/65894377/nodejs-multer-s3-can-upload-to-s3-without-using-credentials
-// https://stackoverflow.com/questions/40666877/uploading-file-using-multer-is-not-working-fully-nodejs
-// https://stackoverflow.com/questions/41432403/how-to-prevent-files-from-being-uploaded-with-multer-unless-they-are-images
-// https://www.youtube.com/watch?v=9kWz8oj8hbk
 const {
     Image
 } = require(__dirname + "./../../../models");

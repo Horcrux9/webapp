@@ -7,7 +7,7 @@ const {
 } = require(__dirname + "./../../../utils/image_utils");
 
 mainRouter.post('/', authentication, getFormData.single("profile"), require("./set"));
-// mainRouter.get('/', require("./get"));
-// mainRouter.delete('/', require("./delete"));
+mainRouter.get('/', authentication, require("./get"));
+mainRouter.delete('/', authentication, require("./delete"));
 
 module.exports = mainRouter;

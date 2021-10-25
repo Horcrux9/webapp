@@ -21,6 +21,8 @@ const _findUser = async (uname) => {
 }
 
 const getCredentialsfToken = (token) => {
+    if (! token) return {};
+
     const splitT = token.split(' ');
     token = splitT.length == 2 ? splitT[1] : splitT[0];
 
