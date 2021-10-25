@@ -7,7 +7,10 @@ const {
     getFormData
 } = require(__dirname + "./../../../utils/image_utils");
 */
-const bodyparser = require('body-parser');
+const bodyparser = require("body-parser");
+const {
+    deleteMain
+} = require("./delete");
 
 
 mainRouter.post('/', authentication, bodyparser.raw({
@@ -15,6 +18,6 @@ mainRouter.post('/', authentication, bodyparser.raw({
     type: "image/*",
 }), require("./set"));
 mainRouter.get('/', authentication, require("./get"));
-mainRouter.delete('/', authentication, require("./delete"));
+mainRouter.delete('/', authentication, deleteMain);
 
 module.exports = mainRouter;

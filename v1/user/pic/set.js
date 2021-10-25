@@ -11,7 +11,7 @@ const {
     bucketName
 } = require(__dirname + "./../../../s3/s3");
 const uuid = require("uuid");
-const fs = require("fs");
+const { deleteHelper } = require("./delete");
 
 const set = async (req) => {
 
@@ -23,6 +23,8 @@ const set = async (req) => {
     }
 
     let image = await profilePicExists(req.user.id);
+
+    await deleteHelper(image);
 
     const fname = fileNameForStorage();
     const params = {

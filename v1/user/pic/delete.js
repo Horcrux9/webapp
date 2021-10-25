@@ -7,8 +7,8 @@ const {
     bucketName
 } = require(__dirname + "./../../../s3/s3");
 
-const deleteFunc = async (req) => {
-    const exists = await profilePicExists(req.user.id);
+
+const deleteHelper = async (exists) => {
     if (exists) {
         try {
             await S3.deleteObject({
@@ -16,12 +16,11 @@ const deleteFunc = async (req) => {
                 Key: getKeyfromUrl(exists.url),
             }).promise();
 
-            await exists.destroy();
-
         } catch (error) {
-            return res.status(500).json({
-                message: error.message
-            });
+            return {
+                status: 500,
+                message: error.message,
+            };
         }
 
         return {
@@ -34,9 +33,27 @@ const deleteFunc = async (req) => {
     };
 };
 
-module.exports = ('/', async (req, res, next) => {
+const _deleteFunc = async (req) => {
+    const exists = await profilePicExists(req.user.id);
+    const response = await deleteHelper(exists);
+
+    if (exists) {
+        try {
+            await exists.destroy();
+        } catch (error) {
+            return {
+                status: 500,
+                message: error.message,
+            };
+        }
+    }
+
+    return response;
+};
+
+const deleteMain = ('/', async (req, res, next) => {
     try {
-        const response = await deleteFunc(req);
+        const response = await _deleteFunc(req);
         return res.status(response.status).json({
             ...response,
             status: undefined
@@ -47,3 +64,8 @@ module.exports = ('/', async (req, res, next) => {
         });
     };
 });
+
+module.exports = {
+    deleteMain,
+    deleteHelper,
+}
