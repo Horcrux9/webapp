@@ -10,6 +10,7 @@ const {
     S3,
     bucketName
 } = require(__dirname + "./../../../s3/s3");
+const uuid = require("uuid");
 
 const set = async (req) => {
 
@@ -22,7 +23,7 @@ const set = async (req) => {
 
     const params = {
         Bucket: bucketName,
-        Key: fileNameForStorage(req.file),
+        Key: uuid.v4() + '/' + fileNameForStorage(req.file),
         Body: req.file.buffer
     };
 

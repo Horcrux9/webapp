@@ -48,7 +48,8 @@ const getFormData = multer({
 });
 
 const getKeyfromUrl = (url) => {
-    return url.substring(url.lastIndexOf('/') + 1);
+    const s = url.split('/');
+    return s[s.length-2] + '/' + s[s.length-1];
 }
 
 module.exports = {
