@@ -21,6 +21,8 @@ const _findUser = async (uname) => {
 }
 
 const getCredentialsfToken = (token) => {
+    if (! token) return {};
+
     const splitT = token.split(' ');
     token = splitT.length == 2 ? splitT[1] : splitT[0];
 
@@ -75,10 +77,21 @@ const authFrmTkn = async (token) => {
     return (await authenticate(response.username, response.password));
 };
 
+const authentication = async (req, res, next) => {
+    const response = await authFrmTkn(req.headers.authorization);
+
+    if (response.status != 200) {
+        return res.status(response.status).json({ ...response, status: undefined });
+    }
+
+    req.user = response.user;
+    next();
+}
+
 module.exports = {
     getCredentialsfToken,
     authenticate,
-    authFrmTkn,
+    authentication,
     _toB64,
     _fromB64,
     _validateP,
