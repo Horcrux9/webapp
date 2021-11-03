@@ -53,8 +53,8 @@ jobs:
           --region ${{ secrets.aws_region }} \
           --output json)
           echo $output
-          dId=$(echo $output | jq -r '.deploymenyId')
-          aws deploy wait deployment-successful --deployment-id $dId
+          did=$(echo $output | jq -r '.deploymentId')
+          aws deploy wait deployment-successful --deployment-id $did
 
     - name: Push artifact to S3
       run: |
