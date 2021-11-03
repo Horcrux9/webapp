@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd /home/ubuntu/webapp
-nohup npm start &
+sudo nohup npm start &
