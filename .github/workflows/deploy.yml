@@ -40,6 +40,10 @@ jobs:
         aws-secret-access-key: ${{ secrets.aws_secret_access_key }}
         aws-region: ${{ secrets.aws_region }}
 
+    - name: Push artifact to S3
+      run: |
+        aws s3 sync ./artefacts s3://${{ secrets.codedeploy_bucket }}
+
     - name: CodeDeploy API call
       run: |
         output=$(aws deploy create-deployment \
@@ -52,7 +56,3 @@ jobs:
           echo $output
           did=$(echo $output | jq -r '.deploymentId')
           aws deploy wait deployment-successful --deployment-id $did
-
-    - name: Push artifact to S3
-      run: |
-        aws s3 sync ./artefacts s3://${{ secrets.codedeploy_bucket }}
