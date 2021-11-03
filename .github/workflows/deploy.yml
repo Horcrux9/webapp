@@ -54,4 +54,4 @@ jobs:
 
     - name: Push artifact to S3
       run: |
-        aws s3 sync ./codedeploy_artifact s3://${{ secrets.codedeploy_bucket }}
+        aws s3 sync webapp.tgz s3://${{ secrets.codedeploy_bucket }}
