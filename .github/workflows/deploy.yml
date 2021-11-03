@@ -27,6 +27,7 @@ jobs:
 
     - name: Build Artifact
       run: |
+        touch webapp.tgz
         tar cfz webapp.tgz --exclude=webapp.tgz .
         pwd
         ls -ltr
