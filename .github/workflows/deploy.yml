@@ -30,9 +30,8 @@ jobs:
         mkdir codedeploy_artifact
         zip -r build_artifact .
         pwd
-        ls -ltr
         mv build_artifact.zip codedeploy_artifact
-        la -ltr
+        ls -ltr
         pwd
         cd codedeploy_artifact
         ls -ltr
