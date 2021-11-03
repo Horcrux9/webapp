@@ -14,6 +14,6 @@ jobs:
       - name: Test in Node.js with JestJS
         uses: actions/setup-node@v1
         with:
-          node-version:  ${{ env `node_version` }}
-
+          node-version: ${{ secrets.node_version }}
+      - run: npm i
       - run: npm test
