@@ -27,8 +27,9 @@ jobs:
 
     - name: Build Artifact
       run: |
-        touch webapp.tgz
-        tar cfz webapp.tgz --exclude=webapp.tgz .
+        mkdir artefacts
+        tar cfz artefacts/webapp.tgz --exclude=./artefacts .
+        cd artefacts
         pwd
         ls -ltr
 
@@ -38,6 +39,10 @@ jobs:
         aws-access-key-id: ${{ secrets.aws_access_key_id }}
         aws-secret-access-key: ${{ secrets.aws_secret_access_key }}
         aws-region: ${{ secrets.aws_region }}
+
+    - name: Push artifact to S3
+      run: |
+        aws s3 sync ./artefacts s3://${{ secrets.codedeploy_bucket }}
 
     - name: CodeDeploy API call
       run: |
@@ -51,7 +56,3 @@ jobs:
           echo $output
           did=$(echo $output | jq -r '.deploymentId')
           aws deploy wait deployment-successful --deployment-id $did
-
-    - name: Push artifact to S3
-      run: |
-        aws s3 sync webapp.tgz s3://${{ secrets.codedeploy_bucket }}
