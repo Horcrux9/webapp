@@ -27,13 +27,8 @@ jobs:
 
     - name: Build Artifact
       run: |
-        mkdir codedeploy_artifact
-        zip -r build_artifact .
+        tar cfz webapp.tgz --exclude=webapp.tgz .
         pwd
-        mv build_artifact.zip codedeploy_artifact
-        ls -ltr
-        pwd
-        cd codedeploy_artifact
         ls -ltr
 
     - name: Configure AWS Credentials
@@ -49,7 +44,7 @@ jobs:
           --application-name ${{ secrets.codedeploy_application_name }} \
           --deployment-group-name ${{ secrets.codedeploy_application_deployment_group_name }} \
           --description "CSYE6225 - CodeDeploy" \
-          --s3-location bucket=${{ secrets.codedeploy_bucket }},key=build_artifact.zip,bundleType=zip \
+          --s3-location bucket=${{ secrets.codedeploy_bucket }},key=webapp.tgz,bundleType=tgz \
           --region ${{ secrets.aws_region }} \
           --output json)
           echo $output
