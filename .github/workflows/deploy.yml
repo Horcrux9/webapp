@@ -27,8 +27,9 @@ jobs:
 
     - name: Build Artifact
       run: |
-        touch webapp.tgz
-        tar cfz webapp.tgz --exclude=webapp.tgz .
+        mkdir artefacts
+        tar cfz artefacts/webapp.tgz --exclude=./artefacts .
+        cd artefacts
         pwd
         ls -ltr
 
@@ -54,4 +55,4 @@ jobs:
 
     - name: Push artifact to S3
       run: |
-        aws s3 sync webapp.tgz s3://${{ secrets.codedeploy_bucket }}
+        aws s3 sync ./artefacts s3://${{ secrets.codedeploy_bucket }}
