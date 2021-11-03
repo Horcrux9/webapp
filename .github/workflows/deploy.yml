@@ -2,7 +2,6 @@ name: Build & Deploy WebApp
 
 env:
   # ARTIFACT_NAME: csye6225-webapp-${{ github.sha }}.zip
-  ARTIFACT_NAME: build_artifact.zip
   CODEDEPLOY_APPLICATION_NAME: ${{ secrets.codedeploy_application_name }}
   CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME: ${{ secrets.codedeploy_application_deployment_group_name }}
   AWS_REGION: ${{ secrets.aws_region }}
@@ -44,16 +43,20 @@ jobs:
         aws-secret-access-key: ${{ secrets.aws_secret_access_key }}
         aws-region: ${{ secrets.aws_region }}
 
-    - name: Push artifact to S3
-      run: |
-        aws s3 sync ./codedeploy_artifact s3://${{ secrets.codedeploy_bucket }}
-
     - name: CodeDeploy API call
       run: |
         output=$(aws deploy create-deployment \
+          --application-name ${{ secrets.codedeploy_application_name }}
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name ${{ secrets.codedeploy_application_deployment_group_name }} \
           --description "CSYE6225 - CodeDeploy" \
-          --s3-location bundleType=zip \
+          --s3-location bucket=${{ secrets.codedeploy_bucket }},key=build_artifact.zip,bundleType=zip \
+          --region ${{ secrets.aws_region }} \
           --output json)
           echo $output
           dId=$(echo $output | jq -r '.deploymenyId')
           aws deploy wait deployment-successful --deployment-id $dId
+
+    - name: Push artifact to S3
+      run: |
+        aws s3 sync ./codedeploy_artifact s3://${{ secrets.codedeploy_bucket }}
