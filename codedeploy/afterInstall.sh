@@ -8,7 +8,7 @@ touch /home/ubuntu/webapp/app.err.log
 sudo chmod -R 777 /home/ubuntu/webapp
 
 #navigate into our working directory where we have all our github files
-cd /home/ubuntu
+cd /home/ubuntu/webapp
 
 #add npm and node to path
 export NVM_DIR="$HOME/.nvm"	
