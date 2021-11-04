@@ -5,9 +5,11 @@ pwd
 ls -lrt
 mkdir webapp
 tar xvf webapp.tgz -C webapp
-echo "#CSYE6225: doing after install: remove zip from webapp folder"
-pwd
+
+cd /home/ubuntu/webapp
+npm i -g sequelize-cli@6.2.0
+sequelize db:migrate
+
 ls -lrt
-cd ..
 
 sleep 3
