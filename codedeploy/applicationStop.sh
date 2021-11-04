@@ -1,9 +1,6 @@
 #!/bin/bash
 
-echo "process id"
-PID=`ps aux | grep "node app.js" | grep -v grep | awk '{print $2}'`
-echo "process id not empty ? $PID"
-if [[ "" !=  "$PID" ]]; then
-  echo "killing $PID"
-  sudo kill -9 $PID
-fi
+#add npm and node to path
+export NVM_DIR="$HOME/.nvm"	
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # loads nvm	
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # loads nvm bash_completion (node is in path now)
