@@ -15,6 +15,6 @@ module.exports = function(app) {
 
     app.use(express.json());
 
-    app.use("/v1", require("./v1/controller"));
+    app.use("/v2", require("./v1/controller"));
 
 };
