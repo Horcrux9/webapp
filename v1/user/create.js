@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { User } = require(__dirname + "./../../models");
 const { userExists, passwordCheck, validateEmail, encryptPss } = require(__dirname + "./../../utils/user_utils");
-const { statsd_client } = require(__dirname + "./../../utils/statsd");
+const statsd_client = require(__dirname + "./../../utils/statsd");
 
 
 const create = async (payload) => {
