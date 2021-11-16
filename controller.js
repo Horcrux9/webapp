@@ -17,4 +17,8 @@ module.exports = function(app) {
 
     app.use("/v2", require("./v1/controller"));
 
+    app.get("/healthcheck", (req, res) => {
+        res.status(200).send({status: "OK madi!"});
+    });
+
 };
