@@ -12,6 +12,7 @@ const {
 } = require(__dirname + "./../../../s3/s3");
 const uuid = require("uuid");
 const { deleteHelper } = require("./delete");
+const { end_time_post } = require(__dirname + "./../../../utils/statsd_utils");
 
 const set = async (req) => {
 
@@ -66,11 +67,13 @@ const set = async (req) => {
 module.exports = ('/', async (req, res, next) => {
     try {
         const response = await set(req);
+        end_time_post(req);
         return res.status(response.status).json({
             ...response,
             status: undefined
         });
     } catch (error) {
+        end_time_post(req);
         return res.status(400).json({
             message: error.message
         });

@@ -1,4 +1,5 @@
 const { encryptPss, validateEmail, passwordCheck } = require(__dirname + "./../../utils/user_utils");
+const { end_time_post } = require(__dirname + "./../../utils/statsd_utils");
 
 const update = async (user, payload) => {
     /* console.log("HERE ", req); */
@@ -48,8 +49,10 @@ const update = async (user, payload) => {
 module.exports = ('/', async (req, res) => {
     try {
         const response = await update(req.user, req.body);
+        end_time_post(req);
         return res.status(response.status).json({ ...response, status: undefined });
     } catch (error) {
+        end_time_post(req);
         return res.status(400).json({ message: error.message });
     };
 });
