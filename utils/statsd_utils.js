@@ -10,10 +10,11 @@ const start_time = async (req, res, next) => {
     next();
 }
 
-const end_time_post = async (req, res, next) => {
+const end_time_post = async (req) => {
+    if (req.start_time === undefined) return;
+
     client.timing(`${req.method} ${req.originalUrl}`, new Date() - req.start_time);
     req.start_time = new Date();
-    next();
 }
 
 module.exports = {
