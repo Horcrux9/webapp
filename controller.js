@@ -1,5 +1,5 @@
 const express = require("express");
-const { counter, start_time, end_time_post } = require("./utils/statsd_utils")
+const { counter, start_time } = require("./utils/statsd_utils")
 /**
  * Main controller
  * https://medium.com/@sesitamakloe/how-we-structure-our-express-js-routes-58933d02e491
@@ -21,7 +21,5 @@ module.exports = function(app) {
     app.get("/healthcheck", (req, res) => {
         res.status(200).send({status: "OK madi!"});
     });
-
-    app.use(end_time_post);
 
 };
