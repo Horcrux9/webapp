@@ -2,9 +2,12 @@ const router = require("express").Router();
 const { User } = require(__dirname + "./../../models");
 const { userExists, passwordCheck, validateEmail, encryptPss } = require(__dirname + "./../../utils/user_utils");
 const { end_time_post } = require(__dirname + "./../../utils/statsd_utils");
+const logger = require(__dirname + "./../../config/logger").getLogger();
 
 
 const create = async (payload) => {
+    logger.info(`CREATE PAYLOAD ::: ${JSON.stringify(payload)}`);
+
     const {
         first_name, last_name, username, password
     } = payload;
