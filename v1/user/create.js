@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const { User } = require(__dirname + "./../../models");
 const { userExists, passwordCheck, validateEmail, encryptPss } = require(__dirname + "./../../utils/user_utils");
-const statsd_client = require(__dirname + "./../../utils/statsd");
 
 
 const create = async (payload) => {
@@ -51,7 +50,6 @@ const create = async (payload) => {
 }
 
 router.post('/', async (req, res, next) => {
-    statsd_client.increment("create_counter");
     try {
         const response = await create(req.body);
         return res.status(response.status).json({ ...response, status: undefined });
