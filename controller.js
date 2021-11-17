@@ -1,4 +1,5 @@
 const express = require("express");
+const { counter, start_time, end_time_post } = require("./utils/statsd_utils")
 /**
  * Main controller
  * https://medium.com/@sesitamakloe/how-we-structure-our-express-js-routes-58933d02e491
@@ -15,10 +16,12 @@ module.exports = function(app) {
 
     app.use(express.json());
 
-    app.use("/v2", require("./v1/controller"));
+    app.use("/v2", start_time, counter, require("./v1/controller"));
 
     app.get("/healthcheck", (req, res) => {
         res.status(200).send({status: "OK madi!"});
     });
+
+    app.use(end_time_post);
 
 };

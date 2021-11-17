@@ -11,14 +11,13 @@ const bodyparser = require("body-parser");
 const {
     deleteMain
 } = require("./delete");
-const counter = require(__dirname + "./../../../utils/counter");
 
 
-mainRouter.post('/', counter, authentication, bodyparser.raw({
+mainRouter.post('/', authentication, bodyparser.raw({
     limit: "3mb",
     type: "image/*",
 }), require("./set"));
-mainRouter.get('/', counter, authentication, require("./get"));
-mainRouter.delete('/',counter, authentication, deleteMain);
+mainRouter.get('/', authentication, require("./get"));
+mainRouter.delete('/', authentication, deleteMain);
 
 module.exports = mainRouter;
