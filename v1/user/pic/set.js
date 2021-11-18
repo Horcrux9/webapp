@@ -13,6 +13,7 @@ const {
 const uuid = require("uuid");
 const { deleteHelper } = require("./delete");
 const { end_time_post } = require(__dirname + "./../../../utils/statsd_utils");
+const statsd_client = require(__dirname + "./../../../utils/statsd");
 
 const set = async (req) => {
 
@@ -34,7 +35,10 @@ const set = async (req) => {
         Body: req.body
     };
 
+    const start_time = new Date();
     const data = await S3.upload(params).promise();
+    // cloudwatch metric
+    statsd_client.timing(`S3-UPLOAD`, (new Date() - start_time));
 
     try {
         if (image) {

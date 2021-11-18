@@ -1,5 +1,6 @@
 const { encryptPss, validateEmail, passwordCheck } = require(__dirname + "./../../utils/user_utils");
 const { end_time_post } = require(__dirname + "./../../utils/statsd_utils");
+const statsd_client = require(__dirname + "./../../../utils/statsd");
 
 const update = async (user, payload) => {
     /* console.log("HERE ", req); */
@@ -38,7 +39,10 @@ const update = async (user, payload) => {
     }
 
     try {
+        const start_time = new Date();
         const ans = await user.update({ ...payload, account_updated: Date.now() });
+        // cloudwatch metric
+        statsd_client.timing(`UPDATE-QUERY`, (new Date() - start_time));
         return { status: 204 };
     } catch (error) {
         return { status: 400, message: error.message };
