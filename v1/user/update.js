@@ -1,6 +1,6 @@
 const { encryptPss, validateEmail, passwordCheck } = require(__dirname + "./../../utils/user_utils");
 const { end_time_post } = require(__dirname + "./../../utils/statsd_utils");
-const statsd_client = require(__dirname + "./../../../utils/statsd");
+const statsd_client = require(__dirname + "./../../utils/statsd");
 
 const update = async (user, payload) => {
     /* console.log("HERE ", req); */

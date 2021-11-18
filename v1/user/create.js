@@ -3,7 +3,7 @@ const { User } = require(__dirname + "./../../models");
 const { userExists, passwordCheck, validateEmail, encryptPss } = require(__dirname + "./../../utils/user_utils");
 const { end_time_post } = require(__dirname + "./../../utils/statsd_utils");
 const logger = require(__dirname + "./../../config/logger").getLogger();
-const statsd_client = require(__dirname + "./../../../utils/statsd");
+const statsd_client = require(__dirname + "./../../utils/statsd");
 
 
 const create = async (payload) => {
