@@ -3,6 +3,7 @@ const { User } = require(__dirname + "./../../models");
 const { userExists, passwordCheck, validateEmail, encryptPss } = require(__dirname + "./../../utils/user_utils");
 const { end_time_post } = require(__dirname + "./../../utils/statsd_utils");
 const logger = require(__dirname + "./../../config/logger").getLogger();
+const statsd_client = require(__dirname + "./../../../utils/statsd");
 
 
 const create = async (payload) => {
@@ -40,12 +41,15 @@ const create = async (payload) => {
 
     const cryptP = await encryptPss(password);
 
+    const start_time = new Date();
     const user = await User.create({
         first_name: first_name,
         last_name: last_name, 
         username: username,
         password: cryptP
     });
+    // cloudwatch metric
+    statsd_client.timing(`CREATE-QUERY`, (new Date() - start_time));
 
     return {
         status: 201,
