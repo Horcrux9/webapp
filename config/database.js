@@ -9,7 +9,7 @@ const config = require("./config.js")[MODE];
 const readReplica = require("./config.js")["read-replica"];
 
 // module.exports = new Sequelize(config.database, config.username, config.password, config);
-module.exports = new Sequelize("database", null, null, {
+module.exports = new Sequelize(null, null, null, {
     dialect: "postgres",
     replication: {
         write: {
