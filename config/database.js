@@ -14,9 +14,19 @@ module.exports = new Sequelize(config.database, config.username, config.password
     replication: {
         read: {
             host: readReplica.host,
+            pool: {
+                min: readReplica.pool.min,
+                max: readReplica.pool.max,
+                idle: readReplica.pool.idle,
+            },
         },
         write: {
             host: config.host,
+            pool: {
+                min: config.pool.min,
+                max: config.pool.max,
+                idle: config.pool.idle,
+            },
         },
     }
 });
