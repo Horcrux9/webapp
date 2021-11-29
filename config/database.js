@@ -9,14 +9,14 @@ const config = require("./config.js")[MODE];
 const readReplica = require("./config.js")["read-replica"];
 
 // module.exports = new Sequelize(config.database, config.username, config.password, config);
-module.exports = new Sequelize(null, null, null, {
+module.exports = new Sequelize(config.database, config.username, config.password, {
     dialect: "postgres",
     replication: {
-        write: {
-            ...config
-        },
         read: {
-            ...readReplica
-        }
+            host: readReplica.host,
+        },
+        write: {
+            host: config.host,
+        },
     }
 });

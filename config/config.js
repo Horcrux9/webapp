@@ -13,12 +13,7 @@ module.exports = {
     }
   },
   "read-replica": {
-    "username": process.env.DB_U || "csye6225u",
-    "password": process.env.DB_P || "csye6225",
-    "database": process.env.DB_N || "csye6225",
     "host": process.env.DB_H_R || "127.0.0.1",
-    "port": 5432,
-    "dialect": "postgres",
     "pool": {
         "max": 5,
         "min": 1,
