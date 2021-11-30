@@ -88,6 +88,18 @@ const authentication = async (req, res, next) => {
     next();
 }
 
+const is_verified = async (req, res, next) => {
+
+    if (req.user.verified != true) {
+        return res.status(403).json({
+            status: 403, /* Forbidden */
+            message: "Verification required, check email to verify your account !"
+        });
+    }
+
+    next();
+}
+
 module.exports = {
     getCredentialsfToken,
     authenticate,
@@ -95,4 +107,5 @@ module.exports = {
     _toB64,
     _fromB64,
     _validateP,
+    is_verified,
 };
