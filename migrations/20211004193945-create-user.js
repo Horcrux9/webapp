@@ -44,6 +44,16 @@ module.exports = {
                 allowNull: false,
                 defaultValue: Date.now(),
             },
+            verified: {
+                type: DataTypes.BOOLEAN,
+                defaultvalue: 0,
+                allownull: false,
+            },
+            verified_on: {
+                type: DataTypes.DATE,
+                defaultValue: null,
+                allowNull: true,
+            },
         });
     },
     down: async (queryInterface, DataTypes) => {
