@@ -11,6 +11,7 @@ const {
 } = require(__dirname + "./../../utils/user_utils");
 const logger = require(__dirname + "./../../config/logger").getLogger();
 const statsd_client = require(__dirname + "./../../utils/statsd");
+const { get_token } = require(__dirname + "./../../utils/email_verification_utils");
 
 const try_verification = async (data) => {
     const response = validateEmail(data.email);
@@ -22,6 +23,15 @@ const try_verification = async (data) => {
         username: data.email
     });
     if (!user) {
+        return "Invalid link!";
+    }
+
+    const token = await get_token(data.email);
+    if (token.status != 200) {
+        return token.status + " :: " + token.message;
+    }
+
+    if (token.token != data.token) {
         return "Invalid link!";
     }
 
