@@ -5,6 +5,7 @@ const { end_time_post } = require(__dirname + "./../../utils/statsd_utils");
 const logger = require(__dirname + "./../../config/logger").getLogger();
 const statsd_client = require(__dirname + "./../../utils/statsd");
 const { create_token } = require(__dirname + "./../../utils/email_verification_utils");
+const { publish_sns } = require(__dirname + "./../../utils/sns_utils");
 
 const create = async (payload) => {
     logger.info(`CREATE PAYLOAD ::: ${JSON.stringify(payload)}`);
@@ -45,6 +46,12 @@ const create = async (payload) => {
 
     if (token.status != 200) {
         return token;
+    }
+
+    const sns_response = publish_sns(username, token.token);
+
+    if (sns_response.status != 200) {
+        return sns_response;
     }
 
     const start_time = new Date();

@@ -6,13 +6,14 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient({
 
 const create_token = async (email) => {
     const ttl = Math.floor(Date.now() / 1000 ) + (60 * 1); // now + 5 mins
+    const token = uuid.v4();
     try {
         const ans = await dynamoDB
             .put({
                 Item: {
                     id: email,
                     email: email,
-                    token: uuid.v4(),
+                    token: token,
                     ttl: ttl,
                 },
                 TableName: process.env.DDB_H || "csye6225",
@@ -34,7 +35,8 @@ const create_token = async (email) => {
 
     return {
         status: 200,
-        message: "Ok"
+        message: "Ok",
+        token: token
     };
 }
 
