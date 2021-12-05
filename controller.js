@@ -16,7 +16,7 @@ module.exports = function(app) {
 
     app.use(express.json());
 
-    app.use("/v2", start_time, counter, require("./v1/controller"));
+    app.use("/v2", start_time, counter, require("./v2/controller"));
 
     app.get("/healthcheck", (req, res) => {
         res.status(200).send({status: "OK madi!"});

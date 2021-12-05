@@ -1,6 +1,7 @@
 'use strict';
 const {
-    Model, Sequelize
+    Model,
+    Sequelize
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
@@ -14,7 +15,13 @@ module.exports = (sequelize, DataTypes) => {
         }
 
         toJSON() {
-            return { ...this.get(), password: undefined, pk: undefined };
+            return {
+                ...this.get(),
+                password: undefined,
+                pk: undefined,
+                verified: this.verified || false,
+                verified_on: this.verified_on || "",
+            };
         }
     };
     User.init({
@@ -53,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             unique: true,
             validate: {
-                    isEmail: true
+                isEmail: true
             }
         },
 
@@ -72,6 +79,18 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             defaultValue: Date.now(),
             allowNull: false,
+        },
+
+        verified: {
+            type: DataTypes.BOOLEAN,
+            defaultvalue: false,
+            allownull: false,
+        },
+
+        verified_on: {
+            type: DataTypes.DATE,
+            defaultValue: null,
+            allowNull: true,
         },
     }, {
         sequelize,

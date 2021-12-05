@@ -1,6 +1,7 @@
 const mainRouter = require("express").Router();
 const {
-    authentication
+    authentication,
+    is_verified,
 } = require(__dirname + "./../../../auth/auth");
 /*
 const {
@@ -13,11 +14,11 @@ const {
 } = require("./delete");
 
 
-mainRouter.post('/', authentication, bodyparser.raw({
+mainRouter.post('/', authentication, is_verified, bodyparser.raw({
     limit: "3mb",
     type: "image/*",
 }), require("./set"));
-mainRouter.get('/', authentication, require("./get"));
-mainRouter.delete('/', authentication, deleteMain);
+mainRouter.get('/', authentication, is_verified, require("./get"));
+mainRouter.delete('/', authentication, is_verified, deleteMain);
 
 module.exports = mainRouter;

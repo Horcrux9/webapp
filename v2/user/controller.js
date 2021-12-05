@@ -1,6 +1,7 @@
 const mainRouter = require("express").Router();
 const {
-    authentication
+    authentication,
+    is_verified,
 } = require(__dirname + "./../../auth/auth");
 
 
@@ -11,8 +12,8 @@ mainRouter.use('/', require("./create"));
 //     .get(require("./view"))
 //     .put(require("./update"));
 
-mainRouter.get("/self", authentication, require("./view"));
-mainRouter.put("/self", authentication, require("./update"));
+mainRouter.get("/self", authentication, is_verified, require("./view"));
+mainRouter.put("/self", authentication, is_verified, require("./update"));
 
 mainRouter.use("/self/pic", require("./pic/controller"));
 

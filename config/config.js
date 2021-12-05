@@ -9,15 +9,15 @@ module.exports = {
     "pool": {
         "max": 5,
         "min": 0,
-        "idle": 10000
+        "idle": 300
     }
   },
   "read-replica": {
     "host": process.env.DB_H_R || "127.0.0.1",
     "pool": {
         "max": 5,
-        "min": 1,
-        "idle": 10000
+        "min": 0,
+        "idle": 300
     }
   },
   "production": {
