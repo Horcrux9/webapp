@@ -13,7 +13,11 @@ const publish_sns = (email, token) => {
         var response = new AWS.SNS({
             apiVersion: "2010-03-31"
         }).publish({
-            Message: url,
+            Message: JSON.stringify({
+                url: url,
+                domain: domain,
+                subject: "Verify your account (SNS -> Lambda -> SNS)"
+            }),
             TopicArn: process.env.SNS_T_ARN || "arn:aws:sns:us-east-1:290167684768:email_request"
         }).promise();
 
