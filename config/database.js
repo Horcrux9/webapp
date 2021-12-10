@@ -12,7 +12,10 @@ const readReplica = require("./config.js")["read-replica"];
 module.exports = new Sequelize(config.database, config.username, config.password, {
     dialect: "postgres",
     dialectOptions: {
-       ssl: true
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        },
     },
     replication: {
         read: {
