@@ -6,6 +6,12 @@ module.exports = {
     "host": process.env.DB_H_W || "127.0.0.1",
     "port": 5432,
     "dialect": "postgres",
+    "dialectOptions": {
+         "ssl": {
+             "require": true,
+             "rejectUnauthorized": false
+         },
+     },
     "pool": {
         "max": 5,
         "min": 0,
